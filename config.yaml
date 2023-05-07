@@ -1,0 +1,11 @@
+database:
+  host: localhost
+  port: 5432
+  dbname: combustiveis
+  user: postgres
+
+datasets:
+  2018-01: D:\Merovingian\Data Projects\PUC\ca-2018-01.csv
+  2018-02: D:\Merovingian\Data Projects\PUC\ca-2018-02.csv
+  2020-01: D:\Merovingian\Data Projects\PUC\ca-2020-01.csv
+  2020-02: D:\Merovingian\Data Projects\PUC\ca-2020-02.csv
