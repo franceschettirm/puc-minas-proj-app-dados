@@ -23,7 +23,7 @@ with open(FILE_PATH, "r") as file:
 HOST = config["database"]["host"]
 DBNAME = config["database"]["dbname"]
 USER = config["database"]["user"]
-PASSWORD = "Sholmes@159943"  # getpass.getpass()
+PASSWORD = getpass.getpass()
 PORT = config["database"]["port"]
 CONNECTION_STRING = f"postgresql://postgres:{PASSWORD}@{HOST}:{PORT}/{DBNAME}"
 
