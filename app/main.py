@@ -4,8 +4,10 @@ import getpass
 import pandas as pd
 import yaml
 import numpy as np
+import os
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
+from definitions import CONFIG_FILE_PATH, DATASET_FOLDER_PATH
 from itertools import product
 
 
@@ -20,7 +22,7 @@ def log(text: str, break_line: bool = True) -> None:
 FILE_PATH = (
     "/Users/rafaelmacedo/Documents/Code/puc-minas-proj-app-dados/app/config.yaml"
 )
-with open(FILE_PATH, "r") as file:
+with open(CONFIG_FILE_PATH, "r") as file:
     config = yaml.safe_load(file)
 
 HOST = config["database"]["host"]
@@ -28,7 +30,7 @@ DBNAME = config["database"]["dbname"]
 USER = config["database"]["user"]
 PASSWORD = getpass.getpass()
 PORT = config["database"]["port"]
-CONNECTION_STRING = f"postgresql://rafaelmacedo:{PASSWORD}@{HOST}:{PORT}/{DBNAME}"
+CONNECTION_STRING = f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}"
 
 log("Estabelecendo a conexão com o banco de dados:")
 engine = create_engine(CONNECTION_STRING)
@@ -54,11 +56,19 @@ for periodo in periodos:
     TIME_MARK = f"{periodo[0]}-{periodo[1]}"
     log(f"Lendo dataset do período: {TIME_MARK}")
     if TRIGGER:
-        df = pd.read_csv(config["datasets"][TIME_MARK], header=0, sep=";")
+        df = pd.read_csv(
+            os.path.join(DATASET_FOLDER_PATH, config["datasets"][TIME_MARK]),
+            header=0,
+            sep=";",
+        )
         df["periodo"] = TIME_MARK
         TRIGGER = False
     else:
-        df_ = pd.read_csv(config["datasets"][TIME_MARK], header=0, sep=";")
+        df_ = pd.read_csv(
+            os.path.join(DATASET_FOLDER_PATH, config["datasets"][TIME_MARK]),
+            header=0,
+            sep=";",
+        )
         df_["periodo"] = TIME_MARK
         df = pd.concat([df, df_])
 
